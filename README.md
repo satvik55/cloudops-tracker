@@ -26,43 +26,55 @@ Think of it as a lightweight version of the kind of internal tooling every on-ca
 | Host | AWS EC2 (Ubuntu 22.04) |
 
 ## Architecture
+
+```
 ┌─────────────────────────────────────────────┐
-│         AWS EC2 (Ubuntu 22.04)              │
+│           AWS EC2 (Ubuntu 22.04)            │
 │                                             │
-│  ┌──────────────┐       ┌─────────────┐     │
-│  │  app         │       │  mysql      │     │
-│  │  PHP 8 +     │──────▶│  MySQL 8.0  │     │
-│  │  Apache      │       │             │     │
-│  │  port 80     │       │  port 3306  │     │
-│  └──────────────┘       └─────────────┘     │
-│         │                                   │
-│         └─── Docker bridge network          │
+│   ┌──────────────┐      ┌──────────────┐     │
+│   │     app      │ ───▶ │    mysql     │     │
+│   │ PHP 8 +      │      │ MySQL 8.0    │     │
+│   │ Apache       │      │              │     │
+│   │ port 80      │      │ port 3306    │     │
+│   └──────────────┘      └──────────────┘     │
+│            │                                 │
+│            └── Docker Bridge Network ────────│
 └─────────────────────────────────────────────┘
-│
-▼
-http://\<EC2_PUBLIC_IP\>
 
-The app container connects to MySQL using Docker's internal DNS (service name `mysql` resolves to the DB container's IP). A healthcheck on the MySQL container ensures the app only starts once the database is ready to accept connections.
+                 ↓
+     http://<EC2_PUBLIC_IP>
+```
 
+The app container connects to MySQL using Docker's internal DNS  
+(service name `mysql` resolves to the DB container's IP).
+
+A healthcheck on the MySQL container ensures the app only starts  
+once the database is ready to accept connections.
 ## Project Structure
+
+```
 cloudops-tracker/
 ├── app/
 │   ├── Dockerfile
-│   ├── db.php              # PDO connection with retry logic
-│   ├── index.php           # Dashboard with live stats
-│   ├── add_incident.php    # Log new incident form
-│   ├── fetch_all.php       # View all incidents
+│   ├── db.php                  # PDO connection with retry logic
+│   ├── index.php               # Dashboard with live stats
+│   ├── add_incident.php        # Log new incident form
+│   ├── fetch_all.php           # View all incidents
 │   ├── fetch_by_severity.php
-│   ├── styles.css          # Local dark-theme styles
+│   ├── styles.css              # Local dark-theme styles
 │   └── favicon.svg
+│
 ├── mysql/
 │   ├── Dockerfile
-│   └── init.sql            # Schema bootstrap
+│   └── init.sql                # Schema bootstrap
+│
 ├── screenshots/
+│
 ├── docker-compose.yml
-├── DEPLOYMENT.md           # Full EC2 deployment guide
+├── DEPLOYMENT.md               # Full EC2 deployment guide
 ├── LICENSE
 └── README.md
+```
 
 ## Quick Start (Local)
 
@@ -101,14 +113,6 @@ Full step-by-step guide in [DEPLOYMENT.md](DEPLOYMENT.md).
 - **Race conditions in multi-container apps** — `depends_on` only guarantees start order, not readiness. Solved with a MySQL `healthcheck` plus application-level retry logic in `db.php`
 - **AWS EC2 deployment flow** — security groups, SSH key management, `scp` for project transfer, Docker installation on Ubuntu via the official apt repository
 - **Debugging production-style issues** — traced `getaddrinfo failed` errors to container startup timing; replaced a Tailwind CDN dependency with local CSS after seeing production warnings
-
-## Future Improvements
-
-- [ ] Add user authentication (login page, session management)
-- [ ] Incident edit / resolve endpoints (currently create-only)
-- [ ] Slack webhook notifications on new P1 incidents
-- [ ] Dockerize with non-root users + read-only filesystems for production hardening
-- [ ] CI/CD via GitHub Actions — build → push to Docker Hub → auto-deploy to EC2
 
 ## License
 

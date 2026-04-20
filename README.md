@@ -51,24 +51,30 @@ The app container connects to MySQL using Docker's internal DNS
 A healthcheck on the MySQL container ensures the app only starts  
 once the database is ready to accept connections.
 ## Project Structure
+
+```
 cloudops-tracker/
 ├── app/
 │   ├── Dockerfile
-│   ├── db.php              # PDO connection with retry logic
-│   ├── index.php           # Dashboard with live stats
-│   ├── add_incident.php    # Log new incident form
-│   ├── fetch_all.php       # View all incidents
+│   ├── db.php                  # PDO connection with retry logic
+│   ├── index.php               # Dashboard with live stats
+│   ├── add_incident.php        # Log new incident form
+│   ├── fetch_all.php           # View all incidents
 │   ├── fetch_by_severity.php
-│   ├── styles.css          # Local dark-theme styles
+│   ├── styles.css              # Local dark-theme styles
 │   └── favicon.svg
+│
 ├── mysql/
 │   ├── Dockerfile
-│   └── init.sql            # Schema bootstrap
+│   └── init.sql                # Schema bootstrap
+│
 ├── screenshots/
+│
 ├── docker-compose.yml
-├── DEPLOYMENT.md           # Full EC2 deployment guide
+├── DEPLOYMENT.md               # Full EC2 deployment guide
 ├── LICENSE
 └── README.md
+```
 
 ## Quick Start (Local)
 

@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+*.log
+
+# Local env
+.env
+.env.local
+
+# Secrets (never commit real credentials)
+*.pem
+*.key
+secrets/

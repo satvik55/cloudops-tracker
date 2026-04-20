@@ -26,24 +26,30 @@ Think of it as a lightweight version of the kind of internal tooling every on-ca
 | Host | AWS EC2 (Ubuntu 22.04) |
 
 ## Architecture
+
+```
 ┌─────────────────────────────────────────────┐
-│         AWS EC2 (Ubuntu 22.04)              │
+│           AWS EC2 (Ubuntu 22.04)            │
 │                                             │
-│  ┌──────────────┐       ┌─────────────┐     │
-│  │  app         │       │  mysql      │     │
-│  │  PHP 8 +     │──────▶│  MySQL 8.0  │     │
-│  │  Apache      │       │             │     │
-│  │  port 80     │       │  port 3306  │     │
-│  └──────────────┘       └─────────────┘     │
-│         │                                   │
-│         └─── Docker bridge network          │
+│   ┌──────────────┐      ┌──────────────┐     │
+│   │     app      │ ───▶ │    mysql     │     │
+│   │ PHP 8 +      │      │ MySQL 8.0    │     │
+│   │ Apache       │      │              │     │
+│   │ port 80      │      │ port 3306    │     │
+│   └──────────────┘      └──────────────┘     │
+│            │                                 │
+│            └── Docker Bridge Network ────────│
 └─────────────────────────────────────────────┘
-│
-▼
-http://\<EC2_PUBLIC_IP\>
 
-The app container connects to MySQL using Docker's internal DNS (service name `mysql` resolves to the DB container's IP). A healthcheck on the MySQL container ensures the app only starts once the database is ready to accept connections.
+                 ↓
+     http://<EC2_PUBLIC_IP>
+```
 
+The app container connects to MySQL using Docker's internal DNS  
+(service name `mysql` resolves to the DB container's IP).
+
+A healthcheck on the MySQL container ensures the app only starts  
+once the database is ready to accept connections.
 ## Project Structure
 cloudops-tracker/
 ├── app/

@@ -117,3 +117,5 @@ MIT — see [LICENSE](LICENSE).
 ---
 
 Built by [Satvik Bodke](https://www.linkedin.com/in/satvik-bodke-b9a229194/) · [GitHub](https://github.com/satvik55)
+
+> **Note:** This project was built as a portfolio exercise to practice Docker Compose deployments on AWS.

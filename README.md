@@ -1,8 +1,14 @@
 # CloudOps Incident Tracker
 
-A containerized incident management system for DevOps / SRE teams to log, track, and filter production incidents by severity, service, and status. Built as a hands-on project to practice Docker Compose deployments on AWS EC2.
+[![Docker Pulls](https://img.shields.io/docker/pulls/satvik55/cloudops-tracker-app?label=app%20pulls&logo=docker)](https://hub.docker.com/r/satvik55/cloudops-tracker-app)
+[![Docker Image Size](https://img.shields.io/docker/image-size/satvik55/cloudops-tracker-app/latest?label=app%20size&logo=docker)](https://hub.docker.com/r/satvik55/cloudops-tracker-app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Think of it as a lightweight version of the kind of internal tooling every on-call engineer uses — PagerDuty / Jira Incident Management, but minimal.
+A containerized incident management system for DevOps / SRE teams to log, track, and filter production incidents by severity, service, and status. Built as a hands-on project to practice Docker Compose deployments and container registry workflows on AWS EC2.
+
+Images published to Docker Hub for both `linux/amd64` and `linux/arm64`:
+- [`satvik55/cloudops-tracker-app`](https://hub.docker.com/r/satvik55/cloudops-tracker-app)
+- [`satvik55/cloudops-tracker-mysql`](https://hub.docker.com/r/satvik55/cloudops-tracker-mysql)
 
 ![Dashboard](screenshots/01-dashboard.png)
 
@@ -76,17 +82,26 @@ cloudops-tracker/
 └── README.md
 ```
 
-## Quick Start (Local)
+## Quick Start
 
-Requires Docker Desktop.
+### Option A: Run pre-built images from Docker Hub (fastest)
+
+No build step required. Just:
+
+```bash
+curl -O https://raw.githubusercontent.com/satvik55/cloudops-tracker/main/docker-compose.hub.yml
+docker compose -f docker-compose.hub.yml up -d
+```
+
+Open `http://localhost` in your browser.
+
+### Option B: Build from source
 
 ```bash
 git clone https://github.com/satvik55/cloudops-tracker.git
 cd cloudops-tracker
 docker compose up -d
 ```
-
-Open `http://localhost` in your browser.
 
 To stop:
 ```bash
